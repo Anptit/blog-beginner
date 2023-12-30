@@ -19,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->app->singleton(
+            \App\Repository\Post\PostRepositoryInterface::class,
+            \App\Repository\Post\PostRepository::class
+        );
     }
 }
