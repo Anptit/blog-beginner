@@ -10,7 +10,12 @@ class Video extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillabe = [];
+    protected $fillabe = [
+        'name',
+        'path',
+        'user_id',
+        'post_id'
+    ];
 
     public function user()
     {

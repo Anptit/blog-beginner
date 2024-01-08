@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Contracts\Repositories\PostRepositoryInterface;
+use App\Repositories\Eloquents\PostRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,9 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app->singleton(
-            \App\Repository\Post\PostRepositoryInterface::class,
-            \App\Repository\Post\PostRepository::class
-        );
+        $this->app->singleton(PostRepositoryInterface::class, PostRepository::class);
     }
 }

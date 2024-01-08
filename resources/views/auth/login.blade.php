@@ -2,25 +2,7 @@
 <html>
 
 <head>
-    <!-- Basic Page Info -->
-    <meta charset="utf-8" />
-    <title>Login</title>
-
-    <!-- Site favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('frontend/vendors/images/apple-touch-icon.png') }}" />
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('frontend/vendors/images/favicon-32x32.png') }}" />
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('frontend/vendors/images/favicon-16x16.png') }}" />
-
-    <!-- Mobile Specific Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet" />
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/vendors/styles/core.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/vendors/styles/icon-font.min.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/vendors/styles/style.css') }}" />
+   @include('header')
 </head>
 
 <body class="login-page">
@@ -44,29 +26,42 @@
                         <div class="login-title">
                             <h2 class="text-center text-primary">Login To DeskApp</h2>
                         </div>
-                        <form>
+                        @include('alert.alert')
+                        <form action="{{ route('auth.login_handle') }}" method="POST">
+                            @csrf
                             <div class="input-group custom">
-                                <input type="text" class="form-control form-control-lg" placeholder="Username" />
+                                <input type="text" name="usernameOrEmail" class="form-control form-control-lg"
+                                    placeholder="Username/Email"
+                                    @if (isset($_COOKIE['username'])) value="{{ $_COOKIE['username'] }}" @endif />
                                 <div class="input-group-append custom">
                                     <span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
                                 </div>
+                                @error('username')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="input-group custom">
-                                <input type="password" class="form-control form-control-lg" placeholder="**********" />
+                                <input type="password" name="password" class="form-control form-control-lg"
+                                    placeholder="**********"
+                                    @if (isset($_COOKIE['password'])) value="{{ $_COOKIE['password'] }}" @endif />
                                 <div class="input-group-append custom">
                                     <span class="input-group-text"><i class="dw dw-padlock1"></i></span>
                                 </div>
+                                @error('password')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="row pb-30">
                                 <div class="col-6">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck1" />
-                                        <label class="custom-control-label" for="customCheck1">Remember</label>
+                                        <input type="checkbox" class="custom-control-input" name="remember_account"
+                                            id="remember-account" />
+                                        <label class="custom-control-label" for="remember-account">Remember</label>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="forgot-password">
-                                        <a href="forgot-password.html">Forgot Password</a>
+                                        <a href="{{ route('auth.forgot_password') }}">Forgot Password</a>
                                     </div>
                                 </div>
                             </div>
@@ -80,7 +75,7 @@
                                     </div>
                                     <div class="input-group mb-0">
                                         <a class="btn btn-outline-primary btn-lg btn-block"
-                                            href="register.html">Register To Create Account</a>
+                                            href="{{ route('auth.register') }}">Register To Create Account</a>
                                     </div>
                                 </div>
                             </div>
@@ -90,11 +85,7 @@
             </div>
         </div>
     </div>
-    <!-- js -->
-    <script src="{{ asset('frontend/vendors/scripts/core.js') }}"></script>
-    <script src="{{ asset('frontend/vendors/scripts/script.min.js') }}"></script>
-    <script src="{{ asset('frontend/vendors/scripts/process.js') }}"></script>
-    <script src="{{ asset('frontend/vendors/scripts/layout-settings.js') }}"></script>
+   @include('footer')
 </body>
 
 </html>
