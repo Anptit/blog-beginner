@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePost;
+use App\Models\Post;
 use App\Services\PostService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PostController extends Controller
 {
@@ -17,10 +20,9 @@ class PostController extends Controller
 
     public function index()
     {
-        return view('posts.index', [
-            'title' => 'Create post',
-            'user' => auth()->user()
-        ]);
+        $posts = Post::all();
+
+        return response()->json(['data' => $posts], 200);
     }
 
     public function create(CreatePost $request)
@@ -31,10 +33,15 @@ class PostController extends Controller
 
         $post = $this->postService->createPost($validator);
 
-        return view('posts.preview-post', [
-            'post' => $post,
-            'title' => $validator['title'],
-            'user' => auth()->user()
-        ]);
+        return response()->json(['data' => $post], 201);
+    }
+
+    public function show(Post $post)
+    {
+        try {
+            return response()->json(['data' => $post, 'message' => 'Success!'], 200);
+        } catch (NotFoundHttpException $e) {
+            abort(400);
+        }
     }
 }

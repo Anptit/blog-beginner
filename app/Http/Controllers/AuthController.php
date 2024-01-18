@@ -14,54 +14,42 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function index()
+    public function login(Request $request)
     {
-        return view('auth.login', [
-            'title' => 'Login'
+        $credentials =  $request->validate([
+            'email' => 'email|required',
+            'password' => 'required'
         ]);
-    }
 
-    public function login(Request $request, LoginUser $user)
-    {
-        if (Auth::attempt($user->handle($request), $request->has('remember_account'))) {
-
-            if (isset($request->remember_account) && !empty($request->remember_account)) {
-                setcookie('username', $request->username, time() + 86400);
-                setcookie('password', $request->password, time() + 86400);
-            } else {
-                setcookie('username', "");
-                setcookie('password', "");
-            }
-
-            $request->session()->regenerate();
-
-            return redirect()->route('user.home');
+        if (Auth::attempt($credentials)){
+            $user = User::firstWhere('email', $request->email);
+            $token = $user->createToken('authToken', ['get-all-posts'])->plainTextToken;
+            return response()->json([
+                'status' => 200,
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+            ]);
         }
 
-        return redirect()->back()->with('fail', 'Your credential is incorrect!');
-    }
-
-    public function createView()
-    {
-        return view('auth.register', [
-            'title' => 'Register'
+        return response()->json([
+            'status' => 500,
+            'message' => 'Error login!'
         ]);
     }
 
-    public function create(StoreUserRequest $request, CreateUser $user)
+    public function create(StoreUserRequest $request)
     {
-        $validated = $request->validated();
-
-        $user->handle($validated);
-
-        return redirect()->route('auth.login')->with('success', 'Register successfully!');
-    }
-    
-    public function forgotPasswordView()
-    {
-        return view('auth.forgot-password', [
-            'title' => 'Forgot password'
+        $creds = $request->validate([
+            'username' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:1|max:30',
+            'birthday' => 'required',
+            'avatar' => 'required'
         ]);
+
+        User::create($creds);
+
+        return response()->json(['message' => 'Register successfully!']);
     }
 
     public function forgotPassword(Request $request)
@@ -73,14 +61,6 @@ class AuthController extends Controller
         }
 
         return redirect()->back()->with('fail', 'Your email is incorrect!');
-    }
-
-    public function resetPasswordView(User $user)
-    {
-        return view('auth.reset-password', [
-            'title' => 'Reset password',
-            'user' => $user
-        ]);
     }
 
     public function resetPassword(ResetPassword $request, User $user)

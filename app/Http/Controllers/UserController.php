@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-       $this->middleware('auth')->except('logout');
-    }
-
     public function index()
     {
-        return view('home.user.dashboard', [
-            'user' => auth()->user(),
-            'title' => 'Dashboard'
-        ]);
+        if (!auth()->user()->tokenCan('get-all-posts')) {
+            abort(403);
+        }
+
+        $user = User::all();
+
+        return response()->json([
+            'data' => $user
+        ], 200);
     }
 
     public function logout(Request $request)
@@ -28,7 +29,6 @@ class UserController extends Controller
      
         $request->session()->regenerateToken();
      
-        return redirect()->route('auth.login');
-
+        return response()->json(['message' => 'You have logout'], 200);
     }
 }

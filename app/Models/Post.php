@@ -10,6 +10,8 @@ class Post extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $hidden = ['deleted_at'];
+
     protected $fillable = [
         'title',
         'content',
@@ -23,6 +25,7 @@ class Post extends Model
 
     public function photos()
     {
+        
         return $this->hasMany(Photo::class);
     }
 

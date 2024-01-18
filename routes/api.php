@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +16,21 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('auth')->group(function() {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register', [AuthController::class, 'create']);
+    Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('reset-password/{user}', [AuthController::class, 'resetPassword']);
 });
+
+Route::prefix('user')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [UserController::class, 'index']);
+});
+
+Route::prefix('post')->middleware('auth:sanctum')->group(function() {
+    Route::get('/', [PostController::class, 'index']);
+    Route::get('/{post}', [PostController::class, 'show']);
+    Route::post('/', [PostController::class, 'create']);
+    Route::post('/edit/{post}', [PostController::class, 'edit']);
+});
+
