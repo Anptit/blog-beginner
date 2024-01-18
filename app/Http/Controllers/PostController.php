@@ -27,13 +27,7 @@ class PostController extends Controller
 
     public function create(CreatePost $request)
     {
-        $validator = $request->validated();
-
-        $validator['user_id'] = auth()->user()->id;
-
-        $post = $this->postService->createPost($validator);
-
-        return response()->json(['data' => $post], 201);
+        return $this->postService->createPost($request);
     }
 
     public function show(Post $post)
@@ -43,5 +37,15 @@ class PostController extends Controller
         } catch (NotFoundHttpException $e) {
             abort(400);
         }
+    }
+
+    public function edit(Request $request,Post $post)
+    {
+        return $this->postService->editPost($request, $post);
+    }
+
+    public function destroy()
+    {
+
     }
 }
