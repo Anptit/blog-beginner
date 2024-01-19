@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Contracts\Repositories\PostRepositoryInterface;
+use App\Models\Post;
+use Carbon\Carbon;
 
 class PostService
 {
@@ -26,27 +28,36 @@ class PostService
 
     public function editPost($request, $post)
     {
-        $user = $this->postRepository->find($post->id)->user_id;
+        $user = $post->user_id;
+
         if (!isset($user)) {
             return abort(400);
         }
+        
         $validator = $request->validate([
             'title' => 'required',
             'content' => 'required'
         ]);
 
-        $validator['user_id'] = $user;
+        $tmpArr = array(
+            'user_id' => $user,
+            'updated_at' => Carbon::now()
+        );
 
-        $post = $this->postRepository->update($post->id, $validator);
+        $postUpdate = $this->postRepository->update($post->id, array_merge($validator, $tmpArr));
 
         return response()->json([
             'message' => 'Get post success!',
-            'data' => $post
+            'data' => $postUpdate
         ], 200);
     }
 
-    public function deletePost()
+    public function deletePost($post)
     {
+        $check = $this->postRepository->delete($post->id);
 
+        if ($check) {
+            return response()->json(null, 204);
+        }
     }
 }

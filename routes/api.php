@@ -29,9 +29,9 @@ Route::prefix('user')->middleware('auth:sanctum')->group(function () {
 
 Route::prefix('post')->middleware('auth:sanctum')->group(function() {
     Route::get('/', [PostController::class, 'index']);
-    Route::get('/{post}', [PostController::class, 'show']);
+    Route::get('{post}', [PostController::class, 'show'])->withTrashed();
     Route::post('/', [PostController::class, 'create']);
-    Route::put('edit/{post}', [PostController::class, 'edit']);
-    Route::delete('');
+    Route::put('edit/{post}', [PostController::class, 'edit'])->withTrashed();
+    Route::delete('{post}', [PostController::class, 'destroy']);
 });
 
