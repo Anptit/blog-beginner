@@ -10,4 +10,9 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
     {
         return \App\Models\Post::class;
     }
+
+    public function getLastPost()
+    {
+        
+    }
 }
