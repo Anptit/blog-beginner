@@ -10,4 +10,24 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
     {
         return \App\Models\Post::class;
     }
+
+    public function getPost1Week()
+    {
+        
+    }
+
+    public function getPost1Month()
+    {
+
+    }
+
+    public function getPost6Month()
+    {
+
+    }
+
+    public function getPost1Year()
+    {
+        
+    }
 }
