@@ -27,7 +27,7 @@ Route::prefix('user')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [UserController::class, 'index']);
 });
 
-Route::prefix('post')->middleware('auth:sanctum')->group(function() {
+Route::prefix('post')->middleware(['auth:sanctum', 'throttle:post'])->group(function() {
     Route::get('/', [PostController::class, 'index']);
     Route::get('{post}', [PostController::class, 'show'])->withTrashed();
     Route::post('/', [PostController::class, 'create']);
