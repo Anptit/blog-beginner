@@ -5,6 +5,9 @@ namespace App\Services;
 use App\Contracts\Repositories\PostRepositoryInterface;
 use App\Models\Post;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder as EBuilder;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Http\Request;
 
 class PostService
 {
@@ -13,6 +16,32 @@ class PostService
     public function __construct(PostRepositoryInterface $postRepository)
     {
         $this->postRepository = $postRepository;
+    }
+
+    public function index(Request $request)
+    {
+        $user = auth()->user();
+
+        $query = Post::query();
+
+        $posts = $query->where('user_id', $user->id)->get();
+
+        if ($posts) {
+            $data = $this->getPostBasedTime($request, $query);
+
+            return response()->json(['data' => $data], 200);
+        }
+
+        return abort(404);
+    }
+
+    public function getPostBasedTime(Request $request, Builder|EBuilder $query)
+    {
+        if ($request->input('is_last_post')) {
+            $data = $this->postRepository->getLastPost($query);
+            return $data;
+        } 
+        
     }
 
     public function createPost($request)

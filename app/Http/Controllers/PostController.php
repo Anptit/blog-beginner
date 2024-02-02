@@ -18,11 +18,9 @@ class PostController extends Controller
         $this->postService = $postService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::all();
-
-        return response()->json(['data' => $posts], 200);
+        return $this->postService->index($request);
     }
 
     public function create(CreatePost $request)

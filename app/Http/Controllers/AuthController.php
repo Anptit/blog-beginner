@@ -30,7 +30,7 @@ class AuthController extends Controller
                 'token_type' => 'Bearer',
             ]);
         }
-
+ 
         return response()->json([
             'status' => 500,
             'message' => 'Error login!'
