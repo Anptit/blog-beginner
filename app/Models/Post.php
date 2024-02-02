@@ -18,6 +18,11 @@ class Post extends Model
         'user_id'
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
