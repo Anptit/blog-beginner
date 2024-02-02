@@ -15,4 +15,6 @@ interface PostRepositoryInterface extends RepositoryInterface
     public function getPost6Month();
 
     public function getPost1Year();
+
+    public function getPostMore1Year();
 }
