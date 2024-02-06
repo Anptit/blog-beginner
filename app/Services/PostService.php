@@ -40,7 +40,12 @@ class PostService
         if ($request->input('is_last_post')) {
             $data = $this->postRepository->getLastPost($query);
             return $data;
-        } 
+        } elseif ($request->input('is_1_week_post')) {
+            $data = $this->postRepository->getPost1Week($query);
+            return $data;
+        } elseif ($request->input('')) {
+
+        }
         
     }
 
