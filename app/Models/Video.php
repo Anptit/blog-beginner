@@ -13,7 +13,6 @@ class Video extends Model
     protected $fillabe = [
         'name',
         'path',
-        'user_id',
         'post_id'
     ];
 
