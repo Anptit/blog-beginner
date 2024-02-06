@@ -24,29 +24,36 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
 
     public function getPost1Week(Builder|EBuilder $query)
     {
-        $post = $query->whereBetween('updated_at', [Carbon::now()->subWeek(), Carbon::now()])
-                      ->get();
+        $post = $query->whereDate('updated_at', '>=', Carbon::now()->subWeek())->get();
 
         return $post;
     }
 
-    public function getPost1Month($post)
+    public function getPost1Month($query)
     {
-        
+        $post = $query->whereDate('updated_at', '>=', Carbon::now()->subMonth())->get();
+
+        return $post;
     }
 
-    public function getPost6Month($post)
+    public function getPost6Months($query)
     {
+        $post = $query->whereBetween('updated_at', '>=', Carbon::now()->subMonths(6))->get();
 
+        return $post;
     }
 
-    public function getPost1Year($post)
+    public function getPost1Year($query)
     {
-        
+        $post = $query->whereBetween('updated_at', '>=', Carbon::now()->subYear())->get();
+
+        return $post;
     }
 
-    public function getPostMore1Year($post)
+    public function getPostMore1Year($query)
     {
+        $post = $query->whereDate('updated_at', '<', Carbon::now()->subYear())->get();
 
+        return $post;
     }
 }
