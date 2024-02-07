@@ -21,7 +21,7 @@ class PhotoFactory extends Factory
         return [
             'name' => fake()->word(),
             'path' => fake()->imageUrl(),
-            'user_id' => User::factory(),
+
             'post_id' => Post::factory() 
         ];
     }

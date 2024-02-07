@@ -20,7 +20,6 @@ class CommentFactory extends Factory
     {
         return [
             'content' => fake()->text(200),
-            'user_id' => User::factory(),
             'post_id' => Post::factory()
         ];
     }
