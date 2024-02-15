@@ -14,7 +14,7 @@ interface PostRepositoryInterface extends RepositoryInterface
 
     public function getPost1Month(Builder|EBuilder $query);
 
-    public function getPost6Month(Builder|EBuilder $query);
+    public function getPost6Months(Builder|EBuilder $query);
 
     public function getPost1Year(Builder|EBuilder $query);
 

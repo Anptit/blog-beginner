@@ -24,15 +24,15 @@ class PostService
 
         $query = Post::query();
 
-        $posts = $query->where('user_id', $user->id)->get();
+        $postOfUser = $query->where('user_id', $user->id);
 
-        if ($posts) {
-            $data = $this->getPostBasedTime($request, $query);
+        $data = $this->getPostBasedTime($request, $postOfUser);
 
-            return response()->json(['data' => $data], 200);
+        if (!$data) {
+            return response()->json(null, 404);
         }
 
-        return abort(404);
+        return response()->json(['data' => $data], 200);
     }
 
     public function getPostBasedTime(Request $request, Builder|EBuilder $query)
@@ -40,13 +40,36 @@ class PostService
         if ($request->input('is_last_post')) {
             $data = $this->postRepository->getLastPost($query);
             return $data;
-        } elseif ($request->input('is_1_week_post')) {
+        }
+
+        else if ($request->input('is_1_week_post')) {
             $data = $this->postRepository->getPost1Week($query);
             return $data;
-        } elseif ($request->input('')) {
-
-        }
+        } 
         
+        elseif ($request->input('is_1_month_post')) {
+            $data = $this->postRepository->getPost1Month($query);
+            return $data;
+        } 
+        
+        elseif ($request->input('is_6_month_post')) {
+            $data = $this->postRepository->getPost6Months($query);
+            return $data;
+        } 
+        
+        elseif ($request->input('is_1_year_post')) {
+            $data = $this->postRepository->getPost1Year($query);
+            return $data;
+        } 
+
+        elseif ($request->input('is_more_1_year_post')) {
+            $data = $this->postRepository->getPostMore1Year($query);
+            return $data;
+        } 
+        
+        else {
+            return;
+        }
     }
 
     public function createPost($request)

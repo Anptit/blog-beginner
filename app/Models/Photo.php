@@ -13,14 +13,8 @@ class Photo extends Model
     protected $fillabe = [
         'name',
         'path',
-        'user_id',
         'post_id'
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     public function post()
     {
