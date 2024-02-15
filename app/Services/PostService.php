@@ -68,7 +68,7 @@ class PostService
         } 
         
         else {
-            return;
+            return $query->get();
         }
     }
 

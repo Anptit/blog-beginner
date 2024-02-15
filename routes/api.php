@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
@@ -33,5 +34,13 @@ Route::prefix('post')->middleware(['auth:sanctum', 'throttle:post'])->group(func
     Route::post('/', [PostController::class, 'create']);
     Route::put('edit/{post}', [PostController::class, 'edit'])->withTrashed();
     Route::delete('{post}', [PostController::class, 'destroy']);
+});
+
+Route::prefix('comment')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [CommentController::class, 'index']);
+    Route::get('{comment}', [CommentController::class, 'show'])->withTrashed();
+    Route::post('/', [CommentController::class, 'create']);
+    Route::put('edit/{comment}', [CommentController::class, 'edit'])->withTrashed();
+    Route::delete('{comment}', [CommentController::class, 'destroy']);
 });
 
