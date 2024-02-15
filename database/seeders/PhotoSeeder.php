@@ -13,6 +13,6 @@ class PhotoSeeder extends Seeder
      */
     public function run(): void
     {
-        Photo::factory()->create();
+        Photo::factory(5)->create();
     }
 }
