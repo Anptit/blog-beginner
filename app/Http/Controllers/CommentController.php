@@ -38,7 +38,7 @@ class CommentController extends Controller
 
     public function edit(Request $request,Comment $comment)
     {
-        return $this->commentService->editComment($request, $comment);
+        return $this->commentService->editComment($request->validated(), $comment);
     }
 
     public function destroy(Comment $comment)
