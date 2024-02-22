@@ -78,12 +78,12 @@ class CommentService
         
         return response()->json(['data' => $comment], 201);
     }
-
-    public function editComment(array $request, Comment $comment)
+    
+    public function editComment(array $data, Comment $comment)
     {
-        $comment = $this->commentRepo->update($comment->id, $request);
+        $newComment = $this->commentRepo->update($comment->id, $data);
 
-        return $this->successResponse($comment);
+        return response()->json(['data' => $newComment], 200);
     }
 
     public function deleteComment(Comment $comment)
