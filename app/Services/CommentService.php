@@ -2,6 +2,7 @@
 
 namespace App\Services;
 use App\Contracts\Repositories\CommentRepositoryInterface;
+use App\Traits\responseStatus;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Database\Query\Builder;
 use App\Models\Comment;
@@ -10,6 +11,8 @@ use Illuminate\Http\Request;
 
 class CommentService
 {
+    use responseStatus;
+
     protected $commentRepo;
 
     public function __construct(CommentRepositoryInterface $commentRepo)
@@ -27,7 +30,7 @@ class CommentService
 
         $data = $this->getCommentBasedTime($request, $query);
 
-        return response()->json(['data' => $data], 200);
+        return $this->successResponse($data);
     }
 
     public function getCommentBasedTime(Request $request, Builder|EBuilder $query)
@@ -70,17 +73,23 @@ class CommentService
     public function createComment(array $request)
     {
         $comment = $this->commentRepo->create($request);
+
+        
         
         return response()->json(['data' => $comment], 201);
     }
 
-    public function editComment(Request $request, Comment $comment)
+    public function editComment(array $request, Comment $comment)
     {
-        
+        $comment = $this->commentRepo->update($comment->id, $request);
+
+        return $this->successResponse($comment);
     }
 
     public function deleteComment(Comment $comment)
     {
+        $this->commentRepo->delete($comment->id);
 
+        return response()->json(null, 204);
     }
 }

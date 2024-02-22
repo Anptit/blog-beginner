@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentRequest;
+use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Comment;
 use App\Services\CommentService;
 use Illuminate\Http\Request;
@@ -36,9 +37,9 @@ class CommentController extends Controller
         }
     }
 
-    public function edit(Request $request,Comment $comment)
+    public function edit(UpdateCommentRequest $request,Comment $comment)
     {
-        return $this->commentService->editComment($request, $comment);
+        return $this->commentService->editComment($request->validated(), $comment);
     }
 
     public function destroy(Comment $comment)
