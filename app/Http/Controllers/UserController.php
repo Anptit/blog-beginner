@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        if (!auth()->user()->tokenCan('get-all-posts')) {
+        if (!auth('api')->user()->tokenCan('get-all-posts')) {
             abort(403);
         }
 

@@ -15,7 +15,7 @@ class Comment extends Model
     protected $fillable = [
         'content',
         'post_id',
-        'viewer_id',
+        'user_id',
         'number_of_like'
     ];
     
@@ -23,4 +23,5 @@ class Comment extends Model
     {
         return $this->belongsTo(Post::class);
     }
+
 }

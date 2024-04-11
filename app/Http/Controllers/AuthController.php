@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\CreateUser;
-use App\Actions\LoginUser;
 use App\Http\Requests\ResetPassword;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -21,7 +21,7 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        if (Auth::attempt($credentials)){
+        if (Auth::guard('api')->attempt($credentials)){
             $user = User::firstWhere('email', $request->email);
             $token = $user->createToken('authToken', ['get-all-posts'])->plainTextToken;
             return response()->json([

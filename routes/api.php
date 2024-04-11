@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::prefix('auth')->group(function() {
+Route::prefix('auth')->middleware('auth:api')->group(function() {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'create']);
     Route::post('forgot-password', [AuthController::class, 'forgotPassword']);

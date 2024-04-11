@@ -22,7 +22,7 @@ class CreatePost extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required',
+            'title' => 'required|nullable',
             'content' => 'required|min:1'
         ];
     }

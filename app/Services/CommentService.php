@@ -3,15 +3,16 @@
 namespace App\Services;
 use App\Contracts\Repositories\CommentRepositoryInterface;
 use App\Traits\responseStatus;
+use DB;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Database\Query\Builder;
 use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class CommentService
+class CommentService 
 {
-    use responseStatus;
+    // use responseStatus;
 
     protected $commentRepo;
 
@@ -30,7 +31,7 @@ class CommentService
 
         $data = $this->getCommentBasedTime($request, $query);
 
-        return $this->successResponse($data);
+        return response()->json(['data' => $data], 200);
     }
 
     public function getCommentBasedTime(Request $request, Builder|EBuilder $query)
@@ -74,8 +75,21 @@ class CommentService
     {
         $comment = $this->commentRepo->create($request);
 
-        
-        
+        $comment->post->increment('number_of_comment');
+
+        dd($comment);
+
+        $user = auth()->user();
+
+        $query = DB::table('comments')->select(DB::raw('count(*) as comments'))
+                ->where('post_id', $comment->post->id)
+                ->where('user_id', $user->id)
+                ->get();
+
+        if ($query >= 2) {
+            $user->viewer->is_groupie = 1;
+        }
+
         return response()->json(['data' => $comment], 201);
     }
 
