@@ -3,7 +3,6 @@
 namespace App\Services;
 use App\Contracts\Repositories\CommentRepositoryInterface;
 use App\Traits\responseStatus;
-use DB;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Database\Query\Builder;
 use App\Models\Comment;
@@ -12,7 +11,7 @@ use Illuminate\Http\Request;
 
 class CommentService 
 {
-    // use responseStatus;
+    use responseStatus;
 
     protected $commentRepo;
 
@@ -75,35 +74,18 @@ class CommentService
     {
         $comment = $this->commentRepo->create($request);
 
-        $comment->post->increment('number_of_comment');
-
-        dd($comment);
-
-        $user = auth()->user();
-
-        $query = DB::table('comments')->select(DB::raw('count(*) as comments'))
-                ->where('post_id', $comment->post->id)
-                ->where('user_id', $user->id)
-                ->get();
-
-        if ($query >= 2) {
-            $user->viewer->is_groupie = 1;
-        }
-
+        
+        
         return response()->json(['data' => $comment], 201);
     }
 
-    public function editComment(array $request, Comment $comment)
+    public function editComment(Request $request, Comment $comment)
     {
-        $comment = $this->commentRepo->update($comment->id, $request);
-
-        return $this->successResponse($comment);
+        
     }
 
     public function deleteComment(Comment $comment)
     {
-        $this->commentRepo->delete($comment->id);
 
-        return response()->json(null, 204);
     }
 }

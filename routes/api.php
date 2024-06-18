@@ -44,3 +44,40 @@ Route::prefix('comment')->middleware('auth:sanctum')->group(function () {
     Route::delete('{comment}', [CommentController::class, 'destroy']);
 });
 
+Route::get('/redirect', function (Request $request) {
+    $request->session()->put('state', $state = Str::random(40));
+ 
+    $query = http_build_query([
+        'client_id' => 3,
+        'redirect_uri' => 'http://127.0.0.1:8001/callback',
+        'response_type' => 'code',
+        'scope' => '',
+        'state' => $state,
+        // 'prompt' => '', // "none", "consent", or "login"
+    ]);
+ 
+    return redirect('/oauth/authorize?'.$query);
+});
+
+Route::get('/callback', function (Request $request) {
+    $state = $request->session()->pull('state');
+ 
+    throw_unless(
+        strlen($state) > 0 && $state === $request->state,
+        InvalidArgumentException::class,
+        'Invalid state value.'
+    );
+ 
+    $response = Http::asForm()->post('http://127.0.0.1:8000/oauth/token', [
+        'grant_type' => 'authorization_code',
+        'client_id' => 3,
+        'client_secret' => 'vTZYUNrUDkKU5FAkXxwYk9SNC1mWlgIikyNYIN6a',
+        'redirect_uri' => 'http://127.0.0.1:8001/callback',
+        'code' => $request->code,
+    ]);
+ 
+    return $response->json();
+});
+
+
+
