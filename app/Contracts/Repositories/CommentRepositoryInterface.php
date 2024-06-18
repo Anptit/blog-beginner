@@ -19,4 +19,6 @@ interface CommentRepositoryInterface extends RepositoryInterface
     public function getComment1Year(Builder|EBuilder $query);
 
     public function getCommentMore1Year(Builder|EBuilder $query);
+
+    public function greeting();
 }
