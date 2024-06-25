@@ -59,11 +59,11 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
 
     public function greeting()
     {
-
+        return "hello";
     }
 
     public function comment()
     {
-        
+        return "abcd";
     }
 }
