@@ -74,6 +74,6 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
 
     public function checkUser()
     {
-        
+        return true;
     }
 }
