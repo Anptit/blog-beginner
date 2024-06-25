@@ -56,4 +56,14 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
 
         return $post;
     }
+
+    public function greeting()
+    {
+
+    }
+
+    public function comment()
+    {
+        
+    }
 }
