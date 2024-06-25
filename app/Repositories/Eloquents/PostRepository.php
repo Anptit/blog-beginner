@@ -66,4 +66,9 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
     {
         return "abcd";
     }
+
+    public function checkComment()
+    {
+        return true;
+    }
 }
