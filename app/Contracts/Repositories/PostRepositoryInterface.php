@@ -23,4 +23,6 @@ interface PostRepositoryInterface extends RepositoryInterface
     public function greeting();
 
     public function comment();
+
+    public function makeFriends();
 }
