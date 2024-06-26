@@ -56,4 +56,9 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
         return $comment;
     }
+
+    public function greeting()
+    {
+        return "hello";
+    }
 }
