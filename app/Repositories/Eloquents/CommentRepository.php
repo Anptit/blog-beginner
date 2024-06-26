@@ -3,6 +3,7 @@
 namespace App\Repositories\Eloquents;
 
 use App\Contracts\Repositories\CommentRepositoryInterface;
+use App\Models\Comment;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Database\Query\Builder;
@@ -12,7 +13,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 {
     public function model()
     {
-        return Post::class;
+        return Comment::class;
     }
 
     public function getLastComment(Builder|EBuilder $query)
