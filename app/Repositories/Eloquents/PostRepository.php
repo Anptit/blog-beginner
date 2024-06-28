@@ -76,9 +76,4 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
     {
         return true;
     }
-
-    public function makeFriends()
-    {
-        return true;
-    }
 }
