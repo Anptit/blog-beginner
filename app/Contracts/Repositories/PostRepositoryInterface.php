@@ -19,4 +19,10 @@ interface PostRepositoryInterface extends RepositoryInterface
     public function getPost1Year(Builder|EBuilder $query);
 
     public function getPostMore1Year(Builder|EBuilder $query);
+
+    public function greeting();
+
+    public function comment();
+
+    public function makeFriends();
 }
